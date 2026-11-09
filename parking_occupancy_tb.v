@@ -194,6 +194,120 @@ module parking_occupancy_tb;
 			$display("FAIL: Occupancy underflow detected. Expected 0, got %0d",
              occupancy_count);
 		end
+		
+		// Test 4: Simulate 10 vehicles entering the parking lot.
+		repeat (10)
+		begin
+			// Assert vehicle entry.
+			entry_event = 1'b1;
+
+			// Hold entry_event for one clock cycle.
+			#10;
+
+			// Clear the entry event.
+			entry_event = 1'b0;
+
+			// Wait one clock cycle before the next entry.
+			#10;
+		end
+		// Test 4: Verify occupancy reaches maximum capacity.
+		#1;
+
+		// Check that exactly 10 vehicles were counted.
+		// 4 - represents 4 bits
+		// 'd - decimal representation
+		// 10 - expected value
+		if (occupancy_count === 4'd10)
+		begin
+			$display("PASS: Parking lot reached maximum capacity.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Expected 10 vehicles, got %0d",
+             occupancy_count);
+		end
+		
+		// Test 5: Attempt vehicle entry when parking is full.
+
+		// Simulate an additional vehicle attempting to enter.
+		entry_event = 1'b1;
+
+		// Hold the entry signal for one clock cycle.
+		#10;
+
+		// Clear the entry event.
+		entry_event = 1'b0;
+
+		// Allow the counter update to settle.
+		#1;
+		// Verify that the 11th vehicle entry is rejected.
+		// Occupancy must remain at the maximum capacity of 10.
+		if (occupancy_count === 4'd10)
+		begin
+			$display("PASS: Entry rejected at maximum capacity.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Capacity limit violated. Expected 10, got %0d",
+             occupancy_count);
+		end
+		
+		// Test 6: Verify that a vehicle can exit a full parking lot.
+
+		// Simulate one vehicle exiting.
+		exit_event = 1'b1;
+
+		// Hold the exit event for one clock cycle.
+		#10;
+
+		// Clear the exit event.
+		exit_event = 1'b0;
+
+		// Allow the counter update to settle.
+		#1;
+		
+		// Verify that one vehicle exited the full parking lot.
+		// Expected occupancy: 10 - 1 = 9.
+		if (occupancy_count === 4'd9)
+		begin
+			$display("PASS: Vehicle exited full parking lot.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Expected 9 vehicles after exit, got %0d",
+             occupancy_count);
+		end
+		
+		// Test 7: Verify a vehicle can enter after a space becomes available.
+
+		// Simulate one new vehicle entering the parking lot.
+		entry_event = 1'b1;
+
+		// Keep the entry event active for one clock cycle.
+		#10;
+
+		// Clear the entry event.
+		entry_event = 1'b0;
+
+		// Allow the counter update to settle.
+		#1;
+		
+		// Verify that a new vehicle can enter after a space is freed.
+		// Expected occupancy: 9 + 1 = 10.
+		if (occupancy_count === 4'd10)
+		begin
+			$display("PASS: Vehicle re-entry after exit successful.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Expected 10 vehicles after re-entry, got %0d",
+             occupancy_count);
+		end
+		
 
 		// End the simulation after completing all test scenarios.
 		// Prevents the clock generator from running indefinitely.
