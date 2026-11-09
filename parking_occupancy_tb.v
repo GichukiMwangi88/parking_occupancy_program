@@ -114,7 +114,7 @@ module parking_occupancy_tb;
 		// Simulation time will now be 30 ns.
 		#10;
 
-		// Simulate a vehicle entering the parking lot.
+		// Test 1: Simulate a vehicle entering the parking lot.
 		// Set entry_event to 1 to indicate a valid entry.
 		entry_event = 1'b1;
 		
@@ -143,37 +143,62 @@ module parking_occupancy_tb;
 			// does not match the expected count of 1.
 			$display("FAIL: Expected 1 vehicle, got %0d", occupancy_count);
 		end
-		// End the simulation after completing the first test.
+
+		//Test 2: Simulate one vehicle exiting the parking lot.
+		exit_event = 1'b1;
+
+		// Keep the exit event active for one clock cycle.
+		#10;
+
+		// Clear the exit event to avoid counting it again.
+		exit_event = 1'b0;
+
+		// Allow the counter update to settle before checking.
+		#1;
+
+		// Verify that the vehicle exit decremented occupancy.
+		if (occupancy_count === 4'd0)
+		begin
+			$display("PASS: Vehicle exit counted correctly.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Expected 0 vehicles after exit, got %0d",
+					occupancy_count);
+		end
+		
+		// Test 3: Verify that an exit at zero occupancy
+		// does not cause the counter to underflow.
+
+		// Simulate an exit while the parking lot is empty.
+		exit_event = 1'b1;
+
+		// Hold the exit event for one clock cycle.
+		#10;
+
+		// Clear the exit event.
+		exit_event = 1'b0;
+
+		// Allow the counter update to settle.
+		#1;
+
+		// Verify occupancy remains zero.
+		if (occupancy_count === 4'd0)
+		begin
+			$display("PASS: Exit at zero occupancy prevented underflow.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Occupancy underflow detected. Expected 0, got %0d",
+             occupancy_count);
+		end
+
+		// End the simulation after completing all test scenarios.
 		// Prevents the clock generator from running indefinitely.
 		$finish;
 		
-
-		
 	end
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 endmodule
