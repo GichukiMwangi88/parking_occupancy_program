@@ -1,0 +1,36 @@
+# Quartus generated compilation databases
+db/
+incremental_db/
+
+# Generated compilation output
+output_files/
+
+# Quartus temporary and backup files
+*.bak
+*.qws
+*.rpt
+*.smsg
+*.summary
+*.done
+*.jdi
+*.sof
+*.pof
+
+# Simulation-generated files
+*.vcd
+*.wlf
+*.log
+*.vvp
+
+# Questa / ModelSim generated simulation files
+simulation/questa/rtl_work/
+simulation/questa/modelsim.ini
+simulation/questa/msim_transcript
+
+# Simulation script backups
+*.do.bak*
+
+# Additional simulation artifacts
+*.qdb
+*.qpg
+*.qtl
