@@ -1,0 +1,59 @@
+/*
+ * SWE-350
+ * Parking Occupancy Management System
+ *
+ * DE10-Standard Board-Level Top Module
+ *
+ * Description:
+ * Connects the physical FPGA board inputs and outputs
+ * to the parking occupancy controller.
+ */
+
+module parking_occupancy_top (
+
+    // 50 MHz clock input from the DE10-Standard board.
+    input wire CLOCK_50,
+	 
+	 // Four active-low pushbuttons.
+    // KEY[0] will be used for resetting the occupancy counter.
+    // Other buttons will eventually handle vehicle events.
+    input wire [3:0] KEY,
+	 
+	 // Ten onboard red LEDs.
+    output wire [9:0] LEDR
+	 
+	);
+	// Internal signal that carries the occupancy count
+	// from the controller to the board-level outputs.
+	wire [3:0] occupancy_count;
+	 
+	 // Instantiate the parking occupancy controller.
+	parking_occupancy uut (
+
+		// Connect the onboard 50 MHz clock.
+		.clk(CLOCK_50),
+
+		// Connect KEY[0] to the active-low reset input.
+		.reset_n(KEY[0]),
+
+		// KEY[1] is the active-low vehicle entry button.
+		.entry_event(!KEY[1]),
+
+		// KEY[2] is the active-low vehicle exit button.
+		.exit_event(!KEY[2]),
+
+		// Connect the controller's 4-bit occupancy output
+		// to the internal signal in the top-level module.
+		.occupancy_count(occupancy_count)
+
+	);
+	
+	 
+	
+	// Display the 4-bit occupancy count on LEDs 0 through 3.
+	assign LEDR[3:0] = occupancy_count;
+
+	// Keep the remaining six LEDs turned off.
+	assign LEDR[9:4] = 6'b000000;
+	 
+endmodule
