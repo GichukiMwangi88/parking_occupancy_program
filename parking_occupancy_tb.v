@@ -308,6 +308,216 @@ module parking_occupancy_tb;
              occupancy_count);
 		end
 		
+		// Test 8: Verify synchronous active-low reset.
+
+		// Assert reset while occupancy is 10.
+		reset_n = 1'b0;
+
+		// Wait for the next rising clock edge.
+		@(posedge clk);
+
+		// Allow the nonblocking assignment to complete.
+		#1;
+		
+		// Verify that the synchronous reset cleared occupancy.
+		// Expected occupancy: 0.
+		if (occupancy_count === 4'd0)
+		begin
+			$display("PASS: Synchronous active-low reset successful.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Reset failed. Expected 0, got %0d",
+             occupancy_count);
+		end
+		
+		// Test 9: Verify reset takes priority over vehicle entry.
+
+		// Keep reset asserted.
+		reset_n = 1'b0;
+
+		// Simulate a vehicle entering while reset is active.
+		entry_event = 1'b1;
+
+		// Wait for the controller to process the inputs.
+		@(posedge clk);
+
+		// Allow the nonblocking assignment to complete.
+		#1;
+
+		// Clear the entry event.
+		entry_event = 1'b0;
+		
+		// Verify that reset takes priority over vehicle entry.
+		// Expected occupancy: 0.
+		if (occupancy_count === 4'd0)
+		begin
+			$display("PASS: Reset takes priority over vehicle entry.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Reset priority violated. Expected 0, got %0d",
+             occupancy_count);
+		end
+		
+		// Test 10: Verify reset takes priority over vehicle exit.
+
+		// Keep reset active.
+		reset_n = 1'b0;
+
+		// Simulate a vehicle exit while reset is asserted.
+		exit_event = 1'b1;
+
+		// Wait for the next rising clock edge.
+		@(posedge clk);
+
+		// Allow the nonblocking assignment to complete.
+		#1;
+
+		// Clear the exit event.
+		exit_event = 1'b0;
+		
+		// Verify that reset takes priority over vehicle exit.
+		// Expected occupancy: 0.
+		if (occupancy_count === 4'd0)
+		begin
+			$display("PASS: Reset active during vehicle exit.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Expected 0 during reset and exit, got %0d",
+             occupancy_count);
+		end
+		
+		// Test 11: Prepare for simultaneous entry and exit testing.
+
+		// Release the active-low reset.
+		reset_n = 1'b1;
+
+		// Allow one rising clock edge with reset inactive.
+		@(posedge clk);
+		
+		// Allow the nonblocking assignment to complete.
+		#1;
+		
+		// Establish a known occupancy before
+		// testing simultaneous entry and exit events.
+
+		// Simulate one vehicle entering.
+		entry_event = 1'b1;
+
+		// Wait for the rising clock edge.
+		@(posedge clk);
+
+		// Allow the nonblocking assignment to complete.
+		#1;
+
+		// Clear the entry event.
+		entry_event = 1'b0;
+		
+		// Verify that normal counting resumes after reset.
+		// Expected occupancy: 1.
+		if (occupancy_count === 4'd1)
+		begin
+			$display("PASS: Vehicle entry successful after reset.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Expected 1 vehicle after reset, got %0d",
+             occupancy_count);
+		end
+		
+		// Test 12: Verify simultaneous entry and exit events.
+
+		// Assert both vehicle events.
+		entry_event = 1'b1;
+		exit_event  = 1'b1;
+
+		// Wait for the next rising clock edge.
+		@(posedge clk);
+
+		// Allow the nonblocking assignment to complete.
+		#1;
+
+		// Clear both events.
+		entry_event = 1'b0;
+		exit_event  = 1'b0;
+		
+		// Verify simultaneous entry and exit do not change occupancy.
+		// Expected occupancy: 1.
+		if (occupancy_count === 4'd1)
+		begin
+			$display("PASS: Simultaneous entry and exit handled correctly.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Simultaneous events changed occupancy. Expected 1, got %0d",
+             occupancy_count);
+		end
+		
+		// Test 13: Prepare to verify reset priority over exit.
+		// Current occupancy is 1.
+
+		// Simulate another vehicle entering.
+		entry_event = 1'b1;
+
+		// Wait for the next rising clock edge.
+		@(posedge clk);
+
+		// Allow the nonblocking assignment to complete.
+		#1;
+
+		// Clear the entry event.
+		entry_event = 1'b0;
+		
+		// Verify that occupancy reached 2 before testing reset priority.
+		// Expected occupancy: 2.
+		if (occupancy_count === 4'd2)
+		begin
+			$display("PASS: Occupancy initialized to 2 for reset priority test.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Expected occupancy of 2, got %0d",
+             occupancy_count);
+		end
+		
+		// Test 14: Verify reset takes priority over vehicle exit.
+		// Starting occupancy is 2.
+
+		// Assert reset and exit simultaneously.
+		reset_n = 1'b0;
+		exit_event = 1'b1;
+
+		// Wait for the next rising clock edge.
+		@(posedge clk);
+
+		// Allow the nonblocking assignment to complete.
+		#1;
+
+		// Clear the exit event.
+		exit_event = 1'b0;
+		
+		// Verify that reset takes priority over vehicle exit.
+		// Starting occupancy: 2.
+		// Expected occupancy after reset: 0.
+		if (occupancy_count === 4'd0)
+		begin
+			$display("PASS: Reset correctly overrides vehicle exit.");
+			$display("PASS: Occupancy count = %0d", occupancy_count);
+		end
+		else
+		begin
+			$display("FAIL: Reset priority violated. Expected 0, got %0d",
+             occupancy_count);
+		end
+		
 
 		// End the simulation after completing all test scenarios.
 		// Prevents the clock generator from running indefinitely.
