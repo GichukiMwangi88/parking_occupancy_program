@@ -107,3 +107,14 @@ uint32_t parking_get_available_spaces(void)
     return PARKING_CAPACITY - occupancy_count;
 }
 
+/**
+ * Resets the parking occupancy counter.
+ *
+ * Clears the current occupancy when KEY0
+ * generates a valid debounced press event.
+ */
+void parking_reset(void)
+{
+    occupancy_count = 0;
+}
+

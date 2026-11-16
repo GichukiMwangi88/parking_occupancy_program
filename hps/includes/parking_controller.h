@@ -19,6 +19,14 @@
  */
 void parking_init(void);
 
+ /*
+ * Reset the parking occupancy counter.
+ *
+ * Called when the user presses KEY0.
+ * Sets occupancy back to zero.
+ */
+void parking_reset(void);
+
 /*
  * Process a vehicle entry event.
  *
@@ -29,6 +37,8 @@ void parking_init(void);
  *   0 if the vehicle was admitted.
  *  -1 if the parking lot is full.
  */
+
+
 int parking_vehicle_entry(void);
 
 /*
