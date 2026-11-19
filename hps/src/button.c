@@ -64,7 +64,7 @@ uint32_t button_read(void)
     // Ensure the button interface has been initialized.
     if (button_register == NULL)
     {
-        return UINT32_MAX;
+        return UINT32_MAX; // this acts a sentinel to indicate failure
     }
 
     // Read the hardware register and retain only KEY0-KEY3.

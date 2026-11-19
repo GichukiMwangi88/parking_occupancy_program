@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 // Include configuration definitions such as PARKING_CAPACITY and other system-wide settings.
-#include "../../config/config.h"
+#include "config.h"
 #include "parking_controller.h"
 
 /*
