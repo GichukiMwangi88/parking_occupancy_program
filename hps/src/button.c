@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#include "../../config/config.h"
+#include "config.h"
 #include "hal_api.h"
 #include "button.h"
 

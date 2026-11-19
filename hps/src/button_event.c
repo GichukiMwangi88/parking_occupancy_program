@@ -11,7 +11,7 @@
 
 #include <stdint.h>
 
-#include "../../config/config.h"
+#include "config.h"
 #include "button_event.h"
 
 // /*
