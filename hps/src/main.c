@@ -25,6 +25,7 @@
 #include "button_event.h"
 #include "parking_controller.h"
 #include "led.h"
+#include "hex_display.h"
 
 /*
  * Controls whether the main application loop continues running.
@@ -113,6 +114,17 @@ int main(void)
 
     // Display the initial occupancy on the FPGA LEDs.
     led_display_occupancy(parking_get_occupancy());
+
+    // Simulate displaying the initial number of available spaces.
+    // The parking lot starts empty, so all 10 spaces are available.
+    if (hex_display_available_spaces(
+            parking_get_available_spaces()) != 0)
+    {
+        fprintf(stderr, "ERROR: HEX stub initialization failed.\n");
+
+        hal_cleanup();
+        return 1;
+    }
 
     // Read the initial state of the FPGA pushbuttons.
     uint32_t initial_buttons = button_read();
@@ -213,10 +225,22 @@ int main(void)
             }
         }
 
-        // Update the LED display to reflect the current parking occupancy.
+        // Update both the physical LEDs and simulated HEX displays
+        // whenever a valid debounced button press is detected.
         if (pressed_events != 0)
         {
+            // Display occupied parking spaces using the onboard LEDs.
             led_display_occupancy(parking_get_occupancy());
+
+            // Simulate displaying available spaces on HEX1 and HEX0.
+            if (hex_display_available_spaces(
+                    parking_get_available_spaces()) != 0)
+            {
+                fprintf(stderr, "ERROR: HEX stub update failed.\n");
+
+                exit_status = 1;
+                break;
+            }
         }
                 
        
