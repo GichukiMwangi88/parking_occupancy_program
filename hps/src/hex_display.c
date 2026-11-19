@@ -60,3 +60,51 @@ int hex_display_write(uint8_t display_index, uint8_t digit)
     // Report simulated success, not hardware verification.
     return 0;
 }
+
+/**
+ * Simulates displaying available parking spaces.
+ *
+ * HEX1 represents the tens digit.
+ * HEX0 represents the ones digit.
+ *
+ * Parameter available Number of available spaces (0-10).
+ *
+ * Return 0 on simulated success, -1 on failure.
+ *
+ * Pseudocode:
+ * 1. Verify that available does not exceed capacity.
+ * 2. Calculate the tens digit.
+ * 3. Calculate the ones digit.
+ * 4. Simulate writing the tens digit to HEX1.
+ * 5. Simulate writing the ones digit to HEX0.
+ * 6. Return the result.
+ *
+ * TODO: Replace the simulated output with physical
+ * active-low seven-segment hardware control.
+ */
+int hex_display_available_spaces(uint32_t available)
+{
+    // Reject invalid availability values.
+    if (available > 10U)
+    {
+        return -1;
+    }
+
+    // Extract the tens and ones digits.
+    uint8_t tens = (uint8_t)(available / 10U);
+    uint8_t ones = (uint8_t)(available % 10U);
+
+    // Simulate displaying the tens digit on HEX1.
+    if (hex_display_write(1, tens) != 0)
+    {
+        return -1;
+    }
+
+    // Simulate displaying the ones digit on HEX0.
+    if (hex_display_write(0, ones) != 0)
+    {
+        return -1;
+    }
+
+    return 0;
+}
