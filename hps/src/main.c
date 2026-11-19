@@ -1,5 +1,8 @@
-/*
- * SWE-350 - Parking Occupancy Management System
+/**
+ * Robert Mwangi
+ * SWE-350
+ * November 19, 2026
+ * Parking Occupancy Management System
  *
  * File: main.c
  *
@@ -65,6 +68,8 @@ static uint64_t get_time_ms(void)
     return ((uint64_t)current_time.tv_sec * 1000ULL) +
            ((uint64_t)current_time.tv_nsec / 1000000ULL);
 }
+
+//-------------Entry Point to the Application----------------------
 
 int main(void)
 {
