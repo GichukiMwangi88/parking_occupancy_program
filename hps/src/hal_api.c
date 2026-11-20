@@ -4,6 +4,10 @@
  * November 19, 2026
  * Parking Occupancy Management System
  * 
+ * References:
+ * [1] Intel, Cyclone V HPS Technical Reference Manual.
+ * [2] Linux man-pages, mmap(2).
+ * 
  * File: hapl_api.c
  * 
  * Purpose: Implementation file to initialize hardware access to HPS 
