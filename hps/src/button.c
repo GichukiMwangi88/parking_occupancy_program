@@ -1,6 +1,9 @@
 
 /*
- * SWE-350 - Parking Occupancy Management System
+ * Robert Mwangi
+ * SWE-350
+ * November 19, 2026
+ * Parking Occupancy Management System
  *
  * File: button.c
  *

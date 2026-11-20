@@ -34,3 +34,8 @@ simulation/questa/msim_transcript
 *.qdb
 *.qpg
 *.qtl
+
+/hps/test_hal
+/hps/*.o
+/hps/src/*.o
+/hps/parking_occupancy

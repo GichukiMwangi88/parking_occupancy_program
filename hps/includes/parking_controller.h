@@ -2,8 +2,11 @@
 #define PARKING_CONTROLLER_H
 
 /*
- * SWE-350 - Parking Occupancy Management System
- *
+ * Robert Mwangi
+ * SWE-350
+ * November 19, 2026
+ * Parking Occupancy Management System
+ * 
  * File: parking_controller.h
  *
  * Purpose:
@@ -13,6 +16,7 @@
 #include <stdint.h>
 
 /*
+ * 
  * Initialize the parking occupancy counter.
  *
  * Sets the current occupancy to zero.

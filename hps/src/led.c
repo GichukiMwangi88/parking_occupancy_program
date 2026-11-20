@@ -1,5 +1,8 @@
 /*
- * SWE-350 - Parking Occupancy Management System
+ * Robert Mwangi
+ * SWE-350
+ * November 19, 2026
+ * Parking Occupancy Management System
  *
  * File: led.c
  *
@@ -11,7 +14,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#include "../../config/config.h"
+#include "config.h"
 #include "hal_api.h"
 #include "led.h"
 

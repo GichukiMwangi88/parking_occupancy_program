@@ -1,3 +1,17 @@
+/*
+ * Robert Mwangi
+ * SWE-350
+ * November 19, 2026
+ * Parking Occupancy Management System
+ * 
+ * File: hapl_api.c
+ * 
+ * Purpose: Implementation file to initialize hardware access to HPS 
+ * hardware registers.
+*/
+
+
+
 #include "hal_api.h" // Provides our HAL function declarations
 #include <stdio.h> // Provides perror() for error reporting
 #include <stdint.h> // Provides types such as uint8_t and uint32_t

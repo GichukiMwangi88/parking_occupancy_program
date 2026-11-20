@@ -1,5 +1,8 @@
 /*
- * SWE-350 - Parking Occupancy Management System
+ * Robert Mwangi
+ * SWE-350
+ * November 19, 2026
+ * Parking Occupancy Management System
  *
  * File: hex_display.c
  *
@@ -16,7 +19,7 @@
 #include "hex_display.h"
 
 /**
- * @brief Simulates writing a digit to a HEX display.
+ * Simulates writing a digit to a HEX display.
  *
  * This stub does not access FPGA hardware.
  * Instead, it prints the requested digit
